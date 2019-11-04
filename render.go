@@ -23,7 +23,7 @@ type WordCloudRender struct {
 func NewWordCloudRender(maxFontSize, minFontSize float64, fontPath string,
 	imgPath string, textList []string,
 	angles []int, colors []*color.RGBA,
-	outImgPath string) *WordCloudRender {
+	outImgPath string) (*WordCloudRender, error) {
 
 	render := &WordCloudRender{
 		MaxFontSize:    maxFontSize,
@@ -43,11 +43,12 @@ func NewWordCloudRender(maxFontSize, minFontSize float64, fontPath string,
 	drawDc.SetRGB(0, 0, 0)
 	render.DrawDc = drawDc
 	if err := drawDc.LoadFontFace(fontPath, render.MaxFontSize); err != nil {
-		panic(err)
+		// panic(err)
+		return nil, err
 	}
 
 	render.ResetMeasureDc(render.MaxFontSize)
-	return render
+	return render, nil
 }
 
 func (this *WordCloudRender) Render() {
